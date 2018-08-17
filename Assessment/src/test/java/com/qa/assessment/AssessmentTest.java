@@ -10,6 +10,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import net.bytebuddy.utility.RandomString;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -114,12 +115,6 @@ public class AssessmentTest {
     @Then("^I can search for the Employee I have just created$")
     public void i_can_search_for_the_Employee_I_have_just_created() throws Throwable {
 
-/*        new WebDriverWait(driver, 30).until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//*[@id=\"personal_details_tab\"]/h4")
-        ));
-        new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(
-                By.id("menu_pim_viewEmployeeList")
-        ));*/
 
         new WebDriverWait(driver, 30).until(ExpectedConditions.textToBePresentInElementLocated(
                 By.id("pim.navbar.employeeName"),
@@ -154,7 +149,7 @@ public class AssessmentTest {
 
 
         int tries = 0;
-        boolean breakIt = true;
+        boolean breakIt;
         while(tries < 100) {
             try {
                 tries++;
@@ -168,7 +163,11 @@ public class AssessmentTest {
 
 
 
-        extentTest.log(LogStatus.PASS, "TEST PASSED");
+        if(driver.findElement(By.id("pim.navbar.employeeName")).getText().contains(searchText)) {
+            extentTest.log(LogStatus.PASS, "TEST PASSED");
+        } else {
+            extentTest.log(LogStatus.FAIL, "There was an issue creating the user");
+        }
 
     }
 
